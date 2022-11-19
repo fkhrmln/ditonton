@@ -1,14 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../styles/text_styles.dart';
-import '../../styles/colors.dart';
-import '../../utils/state_enum.dart';
+import 'package:core/core.dart';
+import 'package:core/presentation/bloc/series_detail/series_detail_bloc.dart';
+import 'package:core/presentation/bloc/series_recommendation/series_recommendation_bloc.dart';
+import 'package:core/presentation/cubit/series_watchlist/series_watchlist_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/entities/genre.dart';
 import '../../domain/entities/series.dart';
 import '../../domain/entities/series_detail.dart';
-import '../../presentation/provider/series_detail_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:provider/provider.dart';
 
 class SeriesDetailPage extends StatefulWidget {
   static const ROUTE_NAME = '/detail-series';
@@ -25,33 +25,61 @@ class _SeriesDetailPageState extends State<SeriesDetailPage> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      Provider.of<SeriesDetailNotifier>(context, listen: false)
-          .fetchSeriesDetail(widget.id);
-      Provider.of<SeriesDetailNotifier>(context, listen: false)
-          .loadWatchlistSeriesStatus(widget.id);
+      context.read<SeriesDetailBloc>().add(OnFetchSeriesDetail(widget.id));
+      context.read<SeriesRecommendationBloc>().add(OnFetchSeriesRecommedation(widget.id));
+      context.read<SeriesWatchlistCubit>().loadWatchlistSeriesStatus(widget.id);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<SeriesDetailNotifier>(
-        builder: (context, provider, child) {
-          if (provider.seriesState == RequestState.Loading) {
+      body: BlocBuilder<SeriesDetailBloc, SeriesDetailState>(
+        builder: (context, detail) {
+          if (detail is SeriesDetailLoading) {
             return Center(
               child: CircularProgressIndicator(),
             );
-          } else if (provider.seriesState == RequestState.Loaded) {
-            final series = provider.series;
-            return SafeArea(
-              child: DetailContentSeries(
-                series,
-                provider.seriesRecommendations,
-                provider.isAddedToWatchlistSeries,
-              ),
+          } else if (detail is SeriesDetailHasData) {
+            final series = detail.result;
+
+            return BlocBuilder<SeriesRecommendationBloc, SeriesRecommendationState>(
+              builder: (context, recommendation) {
+                if (recommendation is SeriesRecommendationLoading) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (recommendation is SeriesRecommendationHasData) {
+                  return BlocBuilder<SeriesWatchlistCubit, SeriesWatchlistState>(
+                    builder: (context, state) {
+                      if (state is SeriesWatchlistIsAdedd) {
+                        return SafeArea(
+                          child: DetailContentSeries(
+                            series,
+                            recommendation.result,
+                            state.isAdded,
+                          ),
+                        );
+                      } else {
+                        return Container();
+                      }
+                    },
+                  );
+                } else if (recommendation is SeriesRecommendationError) {
+                  return Center(
+                    child: Text(recommendation.message),
+                  );
+                } else {
+                  return Container();
+                }
+              },
+            );
+          } else if (detail is SeriesDetailError) {
+            return Center(
+              child: Text(detail.message),
             );
           } else {
-            return Text(provider.message);
+            return Container();
           }
         },
       ),
@@ -113,24 +141,20 @@ class DetailContentSeries extends StatelessWidget {
                             ElevatedButton(
                               onPressed: () async {
                                 if (!isAddedWatchlistSeries) {
-                                  await Provider.of<SeriesDetailNotifier>(context,
-                                          listen: false)
+                                  await context
+                                      .read<SeriesWatchlistCubit>()
                                       .addWatchlistSeries(series);
                                 } else {
-                                  await Provider.of<SeriesDetailNotifier>(context,
-                                          listen: false)
-                                      .removeFromWatchlistSeries(series);
+                                  await context
+                                      .read<SeriesWatchlistCubit>()
+                                      .removeWatchlistSeries(series);
                                 }
 
-                                final message = Provider.of<SeriesDetailNotifier>(context,
-                                        listen: false)
-                                    .watchlistSeriesMessage;
+                                final message =
+                                    context.read<SeriesWatchlistCubit>().message;
 
-                                if (message ==
-                                        SeriesDetailNotifier.watchlistAddSuccessMessage ||
-                                    message ==
-                                        SeriesDetailNotifier
-                                            .watchlistRemoveSuccessMessage) {
+                                if (message == watchlistAddSuccessMessage ||
+                                    message == watchlistRemoveSuccessMessage) {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(content: Text(message)));
                                 } else {
@@ -183,58 +207,41 @@ class DetailContentSeries extends StatelessWidget {
                               'Recommendations',
                               style: kHeading6,
                             ),
-                            Consumer<SeriesDetailNotifier>(
-                              builder: (context, data, child) {
-                                if (data.seriesRecommendationsState ==
-                                    RequestState.Loading) {
-                                  return Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                } else if (data.seriesRecommendationsState ==
-                                    RequestState.Error) {
-                                  return Text(data.message);
-                                } else if (data.seriesRecommendationsState ==
-                                    RequestState.Loaded) {
-                                  return Container(
-                                    height: 150,
-                                    child: ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      itemBuilder: (context, index) {
-                                        final serie = recommendations[index];
-                                        return Padding(
-                                          padding: const EdgeInsets.all(4.0),
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.pushReplacementNamed(
-                                                context,
-                                                SeriesDetailPage.ROUTE_NAME,
-                                                arguments: serie.id,
-                                              );
-                                            },
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(8),
-                                              ),
-                                              child: CachedNetworkImage(
-                                                imageUrl:
-                                                    'https://image.tmdb.org/t/p/w500${serie.posterPath}',
-                                                placeholder: (context, url) => Center(
-                                                  child: CircularProgressIndicator(),
-                                                ),
-                                                errorWidget: (context, url, error) =>
-                                                    Icon(Icons.error),
-                                              ),
-                                            ),
-                                          ),
+                            Container(
+                              height: 150,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  final serie = recommendations[index];
+                                  return Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.pushReplacementNamed(
+                                          context,
+                                          SeriesDetailPage.ROUTE_NAME,
+                                          arguments: serie.id,
                                         );
                                       },
-                                      itemCount: recommendations.length,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(8),
+                                        ),
+                                        child: CachedNetworkImage(
+                                          imageUrl:
+                                              'https://image.tmdb.org/t/p/w500${serie.posterPath}',
+                                          placeholder: (context, url) => Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              Icon(Icons.error),
+                                        ),
+                                      ),
                                     ),
                                   );
-                                } else {
-                                  return Container();
-                                }
-                              },
+                                },
+                                itemCount: recommendations.length,
+                              ),
                             ),
                           ],
                         ),

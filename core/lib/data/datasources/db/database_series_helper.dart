@@ -1,9 +1,7 @@
 import 'dart:async';
 
-import 'package:core/utils/encrypt.dart';
-
 import '../../models/series_table.dart';
-import 'package:sqflite_sqlcipher/sqflite.dart';
+import 'package:sqflite/sqflite.dart';
 
 class DatabaseSeriesHelper {
   static DatabaseSeriesHelper? _databaseSeriesHelper;
@@ -33,7 +31,6 @@ class DatabaseSeriesHelper {
       databasePath,
       version: 1,
       onCreate: _onCreate,
-      password: encrypt('akusukakucing'),
     );
     return db;
   }

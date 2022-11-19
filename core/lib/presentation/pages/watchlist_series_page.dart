@@ -1,9 +1,9 @@
-import '../../utils/state_enum.dart';
+import 'package:core/presentation/cubit/series_watchlist/series_watchlist_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../utils/utils.dart';
-import '../../presentation/provider/watchlist_series_notifier.dart';
 import '../../presentation/widgets/series_card_list.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class WatchListSeriesPage extends StatefulWidget {
   static const ROUTE_NAME = '/watchlist-series';
@@ -16,8 +16,7 @@ class _WatchListSeriesPageState extends State<WatchListSeriesPage> with RouteAwa
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => Provider.of<WatchlistSeriesNotifier>(context, listen: false)
-        .fetchWatchlistSeries());
+    Future.microtask(() => context.read<SeriesWatchlistCubit>().fetchWatchlistSeries());
   }
 
   @override
@@ -27,7 +26,7 @@ class _WatchListSeriesPageState extends State<WatchListSeriesPage> with RouteAwa
   }
 
   void didPopNext() {
-    Provider.of<WatchlistSeriesNotifier>(context, listen: false).fetchWatchlistSeries();
+    context.read<SeriesWatchlistCubit>().fetchWatchlistSeries();
   }
 
   @override
@@ -38,25 +37,27 @@ class _WatchListSeriesPageState extends State<WatchListSeriesPage> with RouteAwa
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<WatchlistSeriesNotifier>(
-          builder: (context, data, child) {
-            if (data.watchlistSeriesState == RequestState.Loading) {
+        child: BlocBuilder<SeriesWatchlistCubit, SeriesWatchlistState>(
+          builder: (context, state) {
+            if (state is SeriesWatchlistLoading) {
               return Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (data.watchlistSeriesState == RequestState.Loaded) {
+            } else if (state is SeriesWatchlistHasData) {
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  final serie = data.watchlistSeries[index];
-                  return SeriesCard(serie);
+                  final movie = state.result[index];
+                  return SeriesCard(movie);
                 },
-                itemCount: data.watchlistSeries.length,
+                itemCount: state.result.length,
               );
-            } else {
+            } else if (state is SeriesWatchlistError) {
               return Center(
                 key: Key('error_message'),
-                child: Text(data.message),
+                child: Text(state.message),
               );
+            } else {
+              return Container();
             }
           },
         ),

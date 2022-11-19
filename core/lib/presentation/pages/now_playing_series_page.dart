@@ -1,8 +1,8 @@
-import '../../utils/state_enum.dart';
-import '../../presentation/provider/now_playing_series_notifier.dart';
+import 'package:core/presentation/bloc/now_playing_series/now_playing_series_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../presentation/widgets/series_card_list.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class NowPlayingSeriesPage extends StatefulWidget {
   static const ROUTE_NAME = '/now-playing-series';
@@ -15,8 +15,8 @@ class _NowPlayingSeriesPageState extends State<NowPlayingSeriesPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => Provider.of<NowPlayingSeriesNotifier>(context, listen: false)
-        .fetchNowPlayingSeries());
+    Future.microtask(
+        () => context.read<NowPlayingSeriesBloc>().add(OnFetchNowPlayingSeries()));
   }
 
   @override
@@ -27,25 +27,29 @@ class _NowPlayingSeriesPageState extends State<NowPlayingSeriesPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<NowPlayingSeriesNotifier>(
-          builder: (context, data, child) {
-            if (data.state == RequestState.Loading) {
-              return Center(
+        child: BlocBuilder<NowPlayingSeriesBloc, NowPlayingSeriesState>(
+          builder: (context, state) {
+            if (state is NowPlayingSeriesLoading) {
+              return const Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (data.state == RequestState.Loaded) {
+            } else if (state is NowPlayingSeriesHasData) {
+              final result = state.result;
               return ListView.builder(
+                itemCount: result.length,
                 itemBuilder: (context, index) {
-                  final series = data.series[index];
-                  return SeriesCard(series);
+                  final movie = result[index];
+
+                  return SeriesCard(movie);
                 },
-                itemCount: data.series.length,
               );
-            } else {
+            } else if (state is NowPlayingSeriesError) {
               return Center(
                 key: Key('error_message'),
-                child: Text(data.message),
+                child: Text(state.message),
               );
+            } else {
+              return Container();
             }
           },
         ),

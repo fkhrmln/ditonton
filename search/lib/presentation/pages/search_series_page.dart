@@ -1,6 +1,6 @@
 import 'package:core/styles/text_styles.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:search/presentation/bloc/search_series_bloc.dart';
+import 'package:search/presentation/bloc/search_series/search_series_bloc.dart';
 import 'package:core/presentation/widgets/series_card_list.dart';
 import 'package:flutter/material.dart';
 
