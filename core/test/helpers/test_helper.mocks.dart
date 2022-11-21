@@ -273,65 +273,88 @@ class MockMovieRemoteDataSource extends _i1.Mock
   }
 
   @override
-  _i7.Future<List<_i12.MovieModel>> getNowPlayingMovies() =>
+  _i7.Future<List<_i12.MovieModel>> getNowPlayingMovies(bool? isTest) =>
       (super.noSuchMethod(
         Invocation.method(
           #getNowPlayingMovies,
-          [],
+          [isTest],
         ),
         returnValue:
             _i7.Future<List<_i12.MovieModel>>.value(<_i12.MovieModel>[]),
       ) as _i7.Future<List<_i12.MovieModel>>);
   @override
-  _i7.Future<List<_i12.MovieModel>> getPopularMovies() => (super.noSuchMethod(
+  _i7.Future<List<_i12.MovieModel>> getPopularMovies(bool? isTest) =>
+      (super.noSuchMethod(
         Invocation.method(
           #getPopularMovies,
-          [],
+          [isTest],
         ),
         returnValue:
             _i7.Future<List<_i12.MovieModel>>.value(<_i12.MovieModel>[]),
       ) as _i7.Future<List<_i12.MovieModel>>);
   @override
-  _i7.Future<List<_i12.MovieModel>> getTopRatedMovies() => (super.noSuchMethod(
+  _i7.Future<List<_i12.MovieModel>> getTopRatedMovies(bool? isTest) =>
+      (super.noSuchMethod(
         Invocation.method(
           #getTopRatedMovies,
-          [],
+          [isTest],
         ),
         returnValue:
             _i7.Future<List<_i12.MovieModel>>.value(<_i12.MovieModel>[]),
       ) as _i7.Future<List<_i12.MovieModel>>);
   @override
-  _i7.Future<_i3.MovieDetailResponse> getMovieDetail(int? id) =>
+  _i7.Future<_i3.MovieDetailResponse> getMovieDetail(
+    int? id,
+    bool? isTest,
+  ) =>
       (super.noSuchMethod(
         Invocation.method(
           #getMovieDetail,
-          [id],
+          [
+            id,
+            isTest,
+          ],
         ),
         returnValue: _i7.Future<_i3.MovieDetailResponse>.value(
             _FakeMovieDetailResponse_1(
           this,
           Invocation.method(
             #getMovieDetail,
-            [id],
+            [
+              id,
+              isTest,
+            ],
           ),
         )),
       ) as _i7.Future<_i3.MovieDetailResponse>);
   @override
-  _i7.Future<List<_i12.MovieModel>> getMovieRecommendations(int? id) =>
+  _i7.Future<List<_i12.MovieModel>> getMovieRecommendations(
+    int? id,
+    bool? isTest,
+  ) =>
       (super.noSuchMethod(
         Invocation.method(
           #getMovieRecommendations,
-          [id],
+          [
+            id,
+            isTest,
+          ],
         ),
         returnValue:
             _i7.Future<List<_i12.MovieModel>>.value(<_i12.MovieModel>[]),
       ) as _i7.Future<List<_i12.MovieModel>>);
   @override
-  _i7.Future<List<_i12.MovieModel>> searchMovies(String? query) =>
+  _i7.Future<List<_i12.MovieModel>> searchMovies(
+    String? query,
+    bool? isTest,
+  ) =>
       (super.noSuchMethod(
         Invocation.method(
           #searchMovies,
-          [query],
+          [
+            query,
+            isTest,
+          ],
         ),
         returnValue:
             _i7.Future<List<_i12.MovieModel>>.value(<_i12.MovieModel>[]),
@@ -619,65 +642,88 @@ class MockSeriesRemoteDataSource extends _i1.Mock
   }
 
   @override
-  _i7.Future<List<_i21.SeriesModel>> getNowPlayingSeries() =>
+  _i7.Future<List<_i21.SeriesModel>> getNowPlayingSeries(bool? isTest) =>
       (super.noSuchMethod(
         Invocation.method(
           #getNowPlayingSeries,
-          [],
+          [isTest],
         ),
         returnValue:
             _i7.Future<List<_i21.SeriesModel>>.value(<_i21.SeriesModel>[]),
       ) as _i7.Future<List<_i21.SeriesModel>>);
   @override
-  _i7.Future<List<_i21.SeriesModel>> getPopularSeries() => (super.noSuchMethod(
+  _i7.Future<List<_i21.SeriesModel>> getPopularSeries(bool? isTest) =>
+      (super.noSuchMethod(
         Invocation.method(
           #getPopularSeries,
-          [],
+          [isTest],
         ),
         returnValue:
             _i7.Future<List<_i21.SeriesModel>>.value(<_i21.SeriesModel>[]),
       ) as _i7.Future<List<_i21.SeriesModel>>);
   @override
-  _i7.Future<List<_i21.SeriesModel>> getTopRatedSeries() => (super.noSuchMethod(
+  _i7.Future<List<_i21.SeriesModel>> getTopRatedSeries(bool? isTest) =>
+      (super.noSuchMethod(
         Invocation.method(
           #getTopRatedSeries,
-          [],
+          [isTest],
         ),
         returnValue:
             _i7.Future<List<_i21.SeriesModel>>.value(<_i21.SeriesModel>[]),
       ) as _i7.Future<List<_i21.SeriesModel>>);
   @override
-  _i7.Future<_i4.SeriesDetailResponse> getSeriesDetail(int? id) =>
+  _i7.Future<_i4.SeriesDetailResponse> getSeriesDetail(
+    int? id,
+    bool? isTest,
+  ) =>
       (super.noSuchMethod(
         Invocation.method(
           #getSeriesDetail,
-          [id],
+          [
+            id,
+            isTest,
+          ],
         ),
         returnValue: _i7.Future<_i4.SeriesDetailResponse>.value(
             _FakeSeriesDetailResponse_2(
           this,
           Invocation.method(
             #getSeriesDetail,
-            [id],
+            [
+              id,
+              isTest,
+            ],
           ),
         )),
       ) as _i7.Future<_i4.SeriesDetailResponse>);
   @override
-  _i7.Future<List<_i21.SeriesModel>> getSeriesRecommendations(int? id) =>
+  _i7.Future<List<_i21.SeriesModel>> getSeriesRecommendations(
+    int? id,
+    bool? isTest,
+  ) =>
       (super.noSuchMethod(
         Invocation.method(
           #getSeriesRecommendations,
-          [id],
+          [
+            id,
+            isTest,
+          ],
         ),
         returnValue:
             _i7.Future<List<_i21.SeriesModel>>.value(<_i21.SeriesModel>[]),
       ) as _i7.Future<List<_i21.SeriesModel>>);
   @override
-  _i7.Future<List<_i21.SeriesModel>> searchSeries(String? query) =>
+  _i7.Future<List<_i21.SeriesModel>> searchSeries(
+    String? query,
+    bool? isTest,
+  ) =>
       (super.noSuchMethod(
         Invocation.method(
           #searchSeries,
-          [query],
+          [
+            query,
+            isTest,
+          ],
         ),
         returnValue:
             _i7.Future<List<_i21.SeriesModel>>.value(<_i21.SeriesModel>[]),

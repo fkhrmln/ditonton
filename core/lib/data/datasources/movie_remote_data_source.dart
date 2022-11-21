@@ -11,12 +11,12 @@ import '../../utils/exception.dart';
 import 'package:http/http.dart' as http;
 
 abstract class MovieRemoteDataSource {
-  Future<List<MovieModel>> getNowPlayingMovies();
-  Future<List<MovieModel>> getPopularMovies();
-  Future<List<MovieModel>> getTopRatedMovies();
-  Future<MovieDetailResponse> getMovieDetail(int id);
-  Future<List<MovieModel>> getMovieRecommendations(int id);
-  Future<List<MovieModel>> searchMovies(String query);
+  Future<List<MovieModel>> getNowPlayingMovies(bool isTest);
+  Future<List<MovieModel>> getPopularMovies(bool isTest);
+  Future<List<MovieModel>> getTopRatedMovies(bool isTest);
+  Future<MovieDetailResponse> getMovieDetail(int id, bool isTest);
+  Future<List<MovieModel>> getMovieRecommendations(int id, bool isTest);
+  Future<List<MovieModel>> searchMovies(String query, bool isTest);
 }
 
 class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
@@ -35,114 +35,172 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
     return securityContext;
   }
 
-  IOClient ioHttpClient(HttpClient client) {
-    IOClient ioClient = IOClient(client);
-
-    return ioClient;
-  }
-
   @override
-  Future<List<MovieModel>> getNowPlayingMovies() async {
-    HttpClient client = HttpClient(context: await globalContext);
-    client.badCertificateCallback =
-        (X509Certificate cert, String host, int port) => false;
+  Future<List<MovieModel>> getNowPlayingMovies(bool isTest) async {
+    if (isTest) {
+      final response =
+          await client.get(Uri.parse('$BASE_URL/movie/now_playing?$API_KEY'));
 
-    IOClient ioClient = IOClient(client);
-
-    final response =
-        await ioClient.get(Uri.parse('$BASE_URL/movie/now_playing?$API_KEY'));
-
-    if (response.statusCode == 200) {
-      return MovieResponse.fromJson(json.decode(response.body)).movieList;
+      if (response.statusCode == 200) {
+        return MovieResponse.fromJson(json.decode(response.body)).movieList;
+      } else {
+        throw ServerException();
+      }
     } else {
-      throw ServerException();
+      HttpClient client = HttpClient(context: await globalContext);
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => false;
+
+      IOClient ioClient = IOClient(client);
+
+      final response =
+          await ioClient.get(Uri.parse('$BASE_URL/movie/now_playing?$API_KEY'));
+
+      if (response.statusCode == 200) {
+        return MovieResponse.fromJson(json.decode(response.body)).movieList;
+      } else {
+        throw ServerException();
+      }
     }
   }
 
   @override
-  Future<MovieDetailResponse> getMovieDetail(int id) async {
-    HttpClient client = HttpClient(context: await globalContext);
-    client.badCertificateCallback =
-        (X509Certificate cert, String host, int port) => false;
+  Future<MovieDetailResponse> getMovieDetail(int id, bool isTest) async {
+    if (isTest) {
+      final response = await client.get(Uri.parse('$BASE_URL/movie/$id?$API_KEY'));
 
-    IOClient ioClient = IOClient(client);
-
-    final response = await ioClient.get(Uri.parse('$BASE_URL/movie/$id?$API_KEY'));
-
-    if (response.statusCode == 200) {
-      return MovieDetailResponse.fromJson(json.decode(response.body));
+      if (response.statusCode == 200) {
+        return MovieDetailResponse.fromJson(json.decode(response.body));
+      } else {
+        throw ServerException();
+      }
     } else {
-      throw ServerException();
+      HttpClient client = HttpClient(context: await globalContext);
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => false;
+
+      IOClient ioClient = IOClient(client);
+
+      final response = await ioClient.get(Uri.parse('$BASE_URL/movie/$id?$API_KEY'));
+
+      if (response.statusCode == 200) {
+        return MovieDetailResponse.fromJson(json.decode(response.body));
+      } else {
+        throw ServerException();
+      }
     }
   }
 
   @override
-  Future<List<MovieModel>> getMovieRecommendations(int id) async {
-    HttpClient client = HttpClient(context: await globalContext);
-    client.badCertificateCallback =
-        (X509Certificate cert, String host, int port) => false;
+  Future<List<MovieModel>> getMovieRecommendations(int id, bool isTest) async {
+    if (isTest) {
+      final response =
+          await client.get(Uri.parse('$BASE_URL/movie/$id/recommendations?$API_KEY'));
 
-    IOClient ioClient = IOClient(client);
-
-    final response =
-        await ioClient.get(Uri.parse('$BASE_URL/movie/$id/recommendations?$API_KEY'));
-
-    if (response.statusCode == 200) {
-      return MovieResponse.fromJson(json.decode(response.body)).movieList;
+      if (response.statusCode == 200) {
+        return MovieResponse.fromJson(json.decode(response.body)).movieList;
+      } else {
+        throw ServerException();
+      }
     } else {
-      throw ServerException();
+      HttpClient client = HttpClient(context: await globalContext);
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => false;
+
+      IOClient ioClient = IOClient(client);
+
+      final response =
+          await ioClient.get(Uri.parse('$BASE_URL/movie/$id/recommendations?$API_KEY'));
+
+      if (response.statusCode == 200) {
+        return MovieResponse.fromJson(json.decode(response.body)).movieList;
+      } else {
+        throw ServerException();
+      }
     }
   }
 
   @override
-  Future<List<MovieModel>> getPopularMovies() async {
-    HttpClient client = HttpClient(context: await globalContext);
-    client.badCertificateCallback =
-        (X509Certificate cert, String host, int port) => false;
+  Future<List<MovieModel>> getPopularMovies(bool isTest) async {
+    if (isTest) {
+      final response = await client.get(Uri.parse('$BASE_URL/movie/popular?$API_KEY'));
 
-    IOClient ioClient = IOClient(client);
-
-    final response = await ioClient.get(Uri.parse('$BASE_URL/movie/popular?$API_KEY'));
-
-    if (response.statusCode == 200) {
-      return MovieResponse.fromJson(json.decode(response.body)).movieList;
+      if (response.statusCode == 200) {
+        return MovieResponse.fromJson(json.decode(response.body)).movieList;
+      } else {
+        throw ServerException();
+      }
     } else {
-      throw ServerException();
+      HttpClient client = HttpClient(context: await globalContext);
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => false;
+
+      IOClient ioClient = IOClient(client);
+
+      final response = await ioClient.get(Uri.parse('$BASE_URL/movie/popular?$API_KEY'));
+
+      if (response.statusCode == 200) {
+        return MovieResponse.fromJson(json.decode(response.body)).movieList;
+      } else {
+        throw ServerException();
+      }
     }
   }
 
   @override
-  Future<List<MovieModel>> getTopRatedMovies() async {
-    HttpClient client = HttpClient(context: await globalContext);
-    client.badCertificateCallback =
-        (X509Certificate cert, String host, int port) => false;
+  Future<List<MovieModel>> getTopRatedMovies(bool isTest) async {
+    if (isTest) {
+      final response = await client.get(Uri.parse('$BASE_URL/movie/top_rated?$API_KEY'));
 
-    IOClient ioClient = IOClient(client);
-
-    final response = await ioClient.get(Uri.parse('$BASE_URL/movie/top_rated?$API_KEY'));
-
-    if (response.statusCode == 200) {
-      return MovieResponse.fromJson(json.decode(response.body)).movieList;
+      if (response.statusCode == 200) {
+        return MovieResponse.fromJson(json.decode(response.body)).movieList;
+      } else {
+        throw ServerException();
+      }
     } else {
-      throw ServerException();
+      HttpClient client = HttpClient(context: await globalContext);
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => false;
+
+      IOClient ioClient = IOClient(client);
+
+      final response =
+          await ioClient.get(Uri.parse('$BASE_URL/movie/top_rated?$API_KEY'));
+
+      if (response.statusCode == 200) {
+        return MovieResponse.fromJson(json.decode(response.body)).movieList;
+      } else {
+        throw ServerException();
+      }
     }
   }
 
   @override
-  Future<List<MovieModel>> searchMovies(String query) async {
-    HttpClient client = HttpClient(context: await globalContext);
-    client.badCertificateCallback =
-        (X509Certificate cert, String host, int port) => false;
+  Future<List<MovieModel>> searchMovies(String query, bool isTest) async {
+    if (isTest) {
+      final response =
+          await client.get(Uri.parse('$BASE_URL/search/movie?$API_KEY&query=$query'));
 
-    IOClient ioClient = IOClient(client);
-
-    final response =
-        await ioClient.get(Uri.parse('$BASE_URL/search/movie?$API_KEY&query=$query'));
-
-    if (response.statusCode == 200) {
-      return MovieResponse.fromJson(json.decode(response.body)).movieList;
+      if (response.statusCode == 200) {
+        return MovieResponse.fromJson(json.decode(response.body)).movieList;
+      } else {
+        throw ServerException();
+      }
     } else {
-      throw ServerException();
+      HttpClient client = HttpClient(context: await globalContext);
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => false;
+
+      IOClient ioClient = IOClient(client);
+
+      final response =
+          await ioClient.get(Uri.parse('$BASE_URL/search/movie?$API_KEY&query=$query'));
+
+      if (response.statusCode == 200) {
+        return MovieResponse.fromJson(json.decode(response.body)).movieList;
+      } else {
+        throw ServerException();
+      }
     }
   }
 }

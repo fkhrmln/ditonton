@@ -19,7 +19,7 @@ class SeriesRepositoryImpl implements SeriesRepository {
   @override
   Future<Either<Failure, List<Series>>> getNowPlayingSeries() async {
     try {
-      final result = await remoteDataSource.getNowPlayingSeries();
+      final result = await remoteDataSource.getNowPlayingSeries(false);
 
       return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
@@ -32,7 +32,7 @@ class SeriesRepositoryImpl implements SeriesRepository {
   @override
   Future<Either<Failure, List<Series>>> getPopularSeries() async {
     try {
-      final result = await remoteDataSource.getPopularSeries();
+      final result = await remoteDataSource.getPopularSeries(false);
 
       return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
@@ -45,7 +45,7 @@ class SeriesRepositoryImpl implements SeriesRepository {
   @override
   Future<Either<Failure, List<Series>>> getTopRatedSeries() async {
     try {
-      final result = await remoteDataSource.getTopRatedSeries();
+      final result = await remoteDataSource.getTopRatedSeries(false);
 
       return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
@@ -58,7 +58,7 @@ class SeriesRepositoryImpl implements SeriesRepository {
   @override
   Future<Either<Failure, SeriesDetail>> getSeriesDetail(int id) async {
     try {
-      final result = await remoteDataSource.getSeriesDetail(id);
+      final result = await remoteDataSource.getSeriesDetail(id, false);
       return Right(result.toEntity());
     } on ServerException {
       return Left(ServerFailure(''));
@@ -70,7 +70,7 @@ class SeriesRepositoryImpl implements SeriesRepository {
   @override
   Future<Either<Failure, List<Series>>> getSeriesRecommendations(int id) async {
     try {
-      final result = await remoteDataSource.getSeriesRecommendations(id);
+      final result = await remoteDataSource.getSeriesRecommendations(id, false);
       return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
       return Left(ServerFailure(''));
@@ -118,7 +118,7 @@ class SeriesRepositoryImpl implements SeriesRepository {
   @override
   Future<Either<Failure, List<Series>>> searchSeries(String query) async {
     try {
-      final result = await remoteDataSource.searchSeries(query);
+      final result = await remoteDataSource.searchSeries(query, false);
       return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
       return Left(ServerFailure(''));
