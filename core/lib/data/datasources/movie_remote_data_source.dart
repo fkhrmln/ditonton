@@ -35,6 +35,12 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
     return securityContext;
   }
 
+  IOClient ioHttpClient(HttpClient client) {
+    IOClient ioClient = IOClient(client);
+
+    return ioClient;
+  }
+
   @override
   Future<List<MovieModel>> getNowPlayingMovies() async {
     HttpClient client = HttpClient(context: await globalContext);

@@ -1,5 +1,7 @@
 # a199-flutter-expert-project
 
+[![Codemagic build status](https://api.codemagic.io/apps/6372509922caace82496bcc3/6372509922caace82496bcc2/status_badge.svg)](https://codemagic.io/apps/6372509922caace82496bcc3/6372509922caace82496bcc2/latest_build)
+
 Repository ini merupakan starter project submission kelas Flutter Expert Dicoding Indonesia.
 
 ---
@@ -51,5 +53,3 @@ Jika kamu menerapkan modular pada project, Anda dapat memanfaatkan berkas `test.
    ```
    Proses ini akan men-_generate_ berkas `lcov.info` dan folder `coverage` terkait dengan laporan coverage.
 4. Tunggu proses testing selesai hingga muncul web terkait laporan coverage.
-
-[![Codemagic build status](https://api.codemagic.io/apps/6372509922caace82496bcc3/6372509922caace82496bcc2/status_badge.svg)](https://codemagic.io/apps/6372509922caace82496bcc3/6372509922caace82496bcc2/latest_build)
