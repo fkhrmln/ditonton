@@ -47,30 +47,30 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDLn7TcI7-npCjPi4It6XOA-TloK8YSL10',
-    appId: '1:64680098722:web:ac88c020ea4d842f5590fb',
-    messagingSenderId: '64680098722',
-    projectId: 'ditonton-a7ae5',
-    authDomain: 'ditonton-a7ae5.firebaseapp.com',
-    storageBucket: 'ditonton-a7ae5.appspot.com',
-    measurementId: 'G-FW1JC6E7KV',
+    apiKey: 'AIzaSyCDhJRmYu2vlsKQVBlppn6BF0c6fsOphI0',
+    appId: '1:443524404430:web:0fd78d37ae14706a15ac9f',
+    messagingSenderId: '443524404430',
+    projectId: 'ditonton-c3104',
+    authDomain: 'ditonton-c3104.firebaseapp.com',
+    storageBucket: 'ditonton-c3104.appspot.com',
+    measurementId: 'G-0Y5LG27BRL',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyB_cVsgYE_agWTK8vW8qjgp_yBVWDXI6g4',
-    appId: '1:64680098722:android:943b3db376b46b7f5590fb',
-    messagingSenderId: '64680098722',
-    projectId: 'ditonton-a7ae5',
-    storageBucket: 'ditonton-a7ae5.appspot.com',
+    apiKey: 'AIzaSyDa2ext_cinSWd9WrK2Uzw8DLZHRjXbGxI',
+    appId: '1:443524404430:android:cb4c686fd33164a215ac9f',
+    messagingSenderId: '443524404430',
+    projectId: 'ditonton-c3104',
+    storageBucket: 'ditonton-c3104.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAtqGuFcmtzQG27M-E7f_dmUuHMtWzCHCw',
-    appId: '1:64680098722:ios:46f11c93cd2ace015590fb',
-    messagingSenderId: '64680098722',
-    projectId: 'ditonton-a7ae5',
-    storageBucket: 'ditonton-a7ae5.appspot.com',
-    iosClientId: '64680098722-d0e5h5pfti81kucs83dsbb9ct27v0h3e.apps.googleusercontent.com',
+    apiKey: 'AIzaSyC3a2JzxQSRVozFuo2WSiLy1b1qzPjAg7Y',
+    appId: '1:443524404430:ios:febfbffa5a48f29315ac9f',
+    messagingSenderId: '443524404430',
+    projectId: 'ditonton-c3104',
+    storageBucket: 'ditonton-c3104.appspot.com',
+    iosClientId: '443524404430-76btrtnvos60ahek3e2andcai9f1i0qd.apps.googleusercontent.com',
     iosBundleId: 'com.dicoding.ditonton',
   );
 }

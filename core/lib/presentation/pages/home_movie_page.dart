@@ -6,6 +6,7 @@ import 'package:core/presentation/bloc/popular_series/popular_series_bloc.dart';
 import 'package:core/presentation/bloc/top_rated_movies/top_rated_movies_bloc.dart';
 import 'package:core/presentation/bloc/top_rated_series/top_rated_series_bloc.dart';
 import 'package:core/utils/routes.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../utils/constants.dart';
 import '../../styles/text_styles.dart';
@@ -76,6 +77,7 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
               leading: Icon(Icons.search),
               title: Text('Search Movies'),
               onTap: () {
+                FirebaseCrashlytics.instance.crash();
                 Navigator.pushNamed(context, SEARCH_MOVIES_ROUTE);
               },
             ),
