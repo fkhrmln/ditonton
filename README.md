@@ -11,3 +11,15 @@
 # Firebase Crashlytics
 
 ![crashlytics](screenshot/crashlytics.png)
+
+# Project Test Coverage
+
+![project_coverage](screenshot/project_coverage.png)
+
+# Module Core Coverage
+
+![core_coverage](screenshot/core_coverage.png)
+
+# Module Search Coverage
+
+![search_coverage](screenshot/search_coverage.png)
