@@ -51,15 +51,12 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
       drawer: Drawer(
         child: Column(
           children: [
-            Expanded(
-              flex: 2,
-              child: UserAccountsDrawerHeader(
-                currentAccountPicture: CircleAvatar(
-                  backgroundImage: AssetImage('assets/circle-g.png'),
-                ),
-                accountName: Text('Fakhri Maulana'),
-                accountEmail: Text('p190x0367@dicoding.org'),
+            UserAccountsDrawerHeader(
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: AssetImage('assets/circle-g.png'),
               ),
+              accountName: Text('Fakhri Maulana'),
+              accountEmail: Text('p190x0367@dicoding.org'),
             ),
             Flexible(
               child: ListTile(
