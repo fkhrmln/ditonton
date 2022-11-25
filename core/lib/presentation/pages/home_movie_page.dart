@@ -51,62 +51,79 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
       drawer: Drawer(
         child: Column(
           children: [
-            UserAccountsDrawerHeader(
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: AssetImage('assets/circle-g.png'),
+            Expanded(
+              flex: 2,
+              child: UserAccountsDrawerHeader(
+                currentAccountPicture: CircleAvatar(
+                  backgroundImage: AssetImage('assets/circle-g.png'),
+                ),
+                accountName: Text('Fakhri Maulana'),
+                accountEmail: Text('p190x0367@dicoding.org'),
               ),
-              accountName: Text('Fakhri Maulana'),
-              accountEmail: Text('p190x0367@dicoding.org'),
             ),
-            ListTile(
-              leading: Icon(Icons.movie),
-              title: Text('Movies'),
-              onTap: () {
-                Navigator.pop(context);
-              },
+            Flexible(
+              child: ListTile(
+                leading: Icon(Icons.movie),
+                title: Text('Movies'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
             ),
-            ListTile(
-              leading: Icon(Icons.tv),
-              title: Text('Series'),
-              onTap: () {
-                Navigator.pop(context);
-              },
+            Flexible(
+              child: ListTile(
+                leading: Icon(Icons.tv),
+                title: Text('Series'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
             ),
-            ListTile(
-              leading: Icon(Icons.search),
-              title: Text('Search Movies'),
-              onTap: () {
-                // FirebaseCrashlytics.instance.crash();
-                Navigator.pushNamed(context, SEARCH_MOVIES_ROUTE);
-              },
+            Flexible(
+              child: ListTile(
+                leading: Icon(Icons.search),
+                title: Text('Search Movies'),
+                onTap: () {
+                  // FirebaseCrashlytics.instance.crash();
+                  Navigator.pushNamed(context, SEARCH_MOVIES_ROUTE);
+                },
+              ),
             ),
-            ListTile(
-              leading: Icon(Icons.search),
-              title: Text('Search Series'),
-              onTap: () {
-                Navigator.pushNamed(context, SEARCH_SERIES_ROUTE);
-              },
+            Flexible(
+              child: ListTile(
+                leading: Icon(Icons.search),
+                title: Text('Search Series'),
+                onTap: () {
+                  Navigator.pushNamed(context, SEARCH_SERIES_ROUTE);
+                },
+              ),
             ),
-            ListTile(
-              leading: Icon(Icons.save_alt),
-              title: Text('Watchlist Movies'),
-              onTap: () {
-                Navigator.pushNamed(context, WatchlistMoviesPage.ROUTE_NAME);
-              },
+            Flexible(
+              child: ListTile(
+                leading: Icon(Icons.save_alt),
+                title: Text('Watchlist Movies'),
+                onTap: () {
+                  Navigator.pushNamed(context, WatchlistMoviesPage.ROUTE_NAME);
+                },
+              ),
             ),
-            ListTile(
-              leading: Icon(Icons.save_alt),
-              title: Text('Watchlist Series'),
-              onTap: () {
-                Navigator.pushNamed(context, WatchListSeriesPage.ROUTE_NAME);
-              },
+            Flexible(
+              child: ListTile(
+                leading: Icon(Icons.save_alt),
+                title: Text('Watchlist Series'),
+                onTap: () {
+                  Navigator.pushNamed(context, WatchListSeriesPage.ROUTE_NAME);
+                },
+              ),
             ),
-            ListTile(
-              onTap: () {
-                Navigator.pushNamed(context, AboutPage.ROUTE_NAME);
-              },
-              leading: Icon(Icons.info_outline),
-              title: Text('About'),
+            Flexible(
+              child: ListTile(
+                onTap: () {
+                  Navigator.pushNamed(context, AboutPage.ROUTE_NAME);
+                },
+                leading: Icon(Icons.info_outline),
+                title: Text('About'),
+              ),
             ),
           ],
         ),

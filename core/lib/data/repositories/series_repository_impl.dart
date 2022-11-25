@@ -19,63 +19,73 @@ class SeriesRepositoryImpl implements SeriesRepository {
   @override
   Future<Either<Failure, List<Series>>> getNowPlayingSeries() async {
     try {
-      final result = await remoteDataSource.getNowPlayingSeries(false);
+      final result = await remoteDataSource.getNowPlayingSeries();
 
       return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
       return Left(ServerFailure(''));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    } on TlsException {
+      return Left(SSLFailure('Ceritificated verify failed'));
     }
   }
 
   @override
   Future<Either<Failure, List<Series>>> getPopularSeries() async {
     try {
-      final result = await remoteDataSource.getPopularSeries(false);
+      final result = await remoteDataSource.getPopularSeries();
 
       return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
       return Left(ServerFailure(''));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    } on TlsException {
+      return Left(SSLFailure('Ceritificated verify failed'));
     }
   }
 
   @override
   Future<Either<Failure, List<Series>>> getTopRatedSeries() async {
     try {
-      final result = await remoteDataSource.getTopRatedSeries(false);
+      final result = await remoteDataSource.getTopRatedSeries();
 
       return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
       return Left(ServerFailure(''));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    } on TlsException {
+      return Left(SSLFailure('Ceritificated verify failed'));
     }
   }
 
   @override
   Future<Either<Failure, SeriesDetail>> getSeriesDetail(int id) async {
     try {
-      final result = await remoteDataSource.getSeriesDetail(id, false);
+      final result = await remoteDataSource.getSeriesDetail(id);
       return Right(result.toEntity());
     } on ServerException {
       return Left(ServerFailure(''));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    } on TlsException {
+      return Left(SSLFailure('Ceritificated verify failed'));
     }
   }
 
   @override
   Future<Either<Failure, List<Series>>> getSeriesRecommendations(int id) async {
     try {
-      final result = await remoteDataSource.getSeriesRecommendations(id, false);
+      final result = await remoteDataSource.getSeriesRecommendations(id);
       return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
       return Left(ServerFailure(''));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    } on TlsException {
+      return Left(SSLFailure('Ceritificated verify failed'));
     }
   }
 
@@ -118,12 +128,14 @@ class SeriesRepositoryImpl implements SeriesRepository {
   @override
   Future<Either<Failure, List<Series>>> searchSeries(String query) async {
     try {
-      final result = await remoteDataSource.searchSeries(query, false);
+      final result = await remoteDataSource.searchSeries(query);
       return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
       return Left(ServerFailure(''));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    } on TlsException {
+      return Left(SSLFailure('Ceritificated verify failed'));
     }
   }
 }

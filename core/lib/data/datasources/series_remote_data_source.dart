@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:flutter/services.dart';
 import 'package:http/io_client.dart';
 
 import '../../utils/exception.dart';
@@ -11,193 +9,87 @@ import '../models/series_response.dart';
 import 'package:http/http.dart' as http;
 
 abstract class SeriesRemoteDataSource {
-  Future<List<SeriesModel>> getNowPlayingSeries(bool isTest);
-  Future<List<SeriesModel>> getPopularSeries(bool isTest);
-  Future<List<SeriesModel>> getTopRatedSeries(bool isTest);
-  Future<SeriesDetailResponse> getSeriesDetail(int id, bool isTest);
-  Future<List<SeriesModel>> getSeriesRecommendations(int id, bool isTest);
-  Future<List<SeriesModel>> searchSeries(String query, bool isTest);
+  Future<List<SeriesModel>> getNowPlayingSeries();
+  Future<List<SeriesModel>> getPopularSeries();
+  Future<List<SeriesModel>> getTopRatedSeries();
+  Future<SeriesDetailResponse> getSeriesDetail(int id);
+  Future<List<SeriesModel>> getSeriesRecommendations(int id);
+  Future<List<SeriesModel>> searchSeries(String query);
 }
 
 class SeriesRemoteDataSourceImpl implements SeriesRemoteDataSource {
   static const API_KEY = 'api_key=2174d146bb9c0eab47529b2e77d6b526';
   static const BASE_URL = 'https://api.themoviedb.org/3';
 
-  final http.Client client;
+  final IOClient client;
 
   SeriesRemoteDataSourceImpl({required this.client});
 
-  Future<SecurityContext> get globalContext async {
-    final sslCert = await rootBundle.load('certificates/certificates.pem');
-    SecurityContext securityContext = SecurityContext(withTrustedRoots: false);
-    securityContext.setTrustedCertificatesBytes(sslCert.buffer.asInt8List());
-
-    return securityContext;
-  }
-
   @override
-  Future<List<SeriesModel>> getNowPlayingSeries(bool isTest) async {
-    if (isTest) {
-      final response = await client.get(Uri.parse('$BASE_URL/tv/on_the_air?$API_KEY'));
+  Future<List<SeriesModel>> getNowPlayingSeries() async {
+    final response = await client.get(Uri.parse('$BASE_URL/tv/on_the_air?$API_KEY'));
 
-      if (response.statusCode == 200) {
-        return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
-      } else {
-        throw ServerException();
-      }
+    if (response.statusCode == 200) {
+      return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
     } else {
-      HttpClient client = HttpClient(context: await globalContext);
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => false;
-
-      IOClient ioClient = IOClient(client);
-
-      final response = await ioClient.get(Uri.parse('$BASE_URL/tv/on_the_air?$API_KEY'));
-
-      if (response.statusCode == 200) {
-        return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
-      } else {
-        throw ServerException();
-      }
+      throw ServerException();
     }
   }
 
   @override
-  Future<List<SeriesModel>> getPopularSeries(bool isTest) async {
-    if (isTest) {
-      final response = await client.get(Uri.parse('$BASE_URL/tv/popular?$API_KEY'));
+  Future<List<SeriesModel>> getPopularSeries() async {
+    final response = await client.get(Uri.parse('$BASE_URL/tv/popular?$API_KEY'));
 
-      if (response.statusCode == 200) {
-        return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
-      } else {
-        throw ServerException();
-      }
+    if (response.statusCode == 200) {
+      return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
     } else {
-      HttpClient client = HttpClient(context: await globalContext);
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => false;
-
-      IOClient ioClient = IOClient(client);
-
-      final response = await ioClient.get(Uri.parse('$BASE_URL/tv/popular?$API_KEY'));
-
-      if (response.statusCode == 200) {
-        return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
-      } else {
-        throw ServerException();
-      }
+      throw ServerException();
     }
   }
 
   @override
-  Future<List<SeriesModel>> getTopRatedSeries(bool isTest) async {
-    if (isTest) {
-      final response = await client.get(Uri.parse('$BASE_URL/tv/top_rated?$API_KEY'));
+  Future<List<SeriesModel>> getTopRatedSeries() async {
+    final response = await client.get(Uri.parse('$BASE_URL/tv/top_rated?$API_KEY'));
 
-      if (response.statusCode == 200) {
-        return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
-      } else {
-        throw ServerException();
-      }
+    if (response.statusCode == 200) {
+      return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
     } else {
-      HttpClient client = HttpClient(context: await globalContext);
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => false;
-
-      IOClient ioClient = IOClient(client);
-
-      final response = await ioClient.get(Uri.parse('$BASE_URL/tv/top_rated?$API_KEY'));
-
-      if (response.statusCode == 200) {
-        return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
-      } else {
-        throw ServerException();
-      }
+      throw ServerException();
     }
   }
 
   @override
-  Future<SeriesDetailResponse> getSeriesDetail(int id, bool isTest) async {
-    if (isTest) {
-      final response = await client.get(Uri.parse('$BASE_URL/tv/$id?$API_KEY'));
+  Future<SeriesDetailResponse> getSeriesDetail(int id) async {
+    final response = await client.get(Uri.parse('$BASE_URL/tv/$id?$API_KEY'));
 
-      if (response.statusCode == 200) {
-        return SeriesDetailResponse.fromJson(json.decode(response.body));
-      } else {
-        throw ServerException();
-      }
+    if (response.statusCode == 200) {
+      return SeriesDetailResponse.fromJson(json.decode(response.body));
     } else {
-      HttpClient client = HttpClient(context: await globalContext);
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => false;
-
-      IOClient ioClient = IOClient(client);
-
-      final response = await ioClient.get(Uri.parse('$BASE_URL/tv/$id?$API_KEY'));
-
-      if (response.statusCode == 200) {
-        return SeriesDetailResponse.fromJson(json.decode(response.body));
-      } else {
-        throw ServerException();
-      }
+      throw ServerException();
     }
   }
 
   @override
-  Future<List<SeriesModel>> getSeriesRecommendations(int id, bool isTest) async {
-    if (isTest) {
-      final response =
-          await client.get(Uri.parse('$BASE_URL/tv/$id/recommendations?$API_KEY'));
+  Future<List<SeriesModel>> getSeriesRecommendations(int id) async {
+    final response =
+        await client.get(Uri.parse('$BASE_URL/tv/$id/recommendations?$API_KEY'));
 
-      if (response.statusCode == 200) {
-        return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
-      } else {
-        throw ServerException();
-      }
+    if (response.statusCode == 200) {
+      return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
     } else {
-      HttpClient client = HttpClient(context: await globalContext);
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => false;
-
-      IOClient ioClient = IOClient(client);
-
-      final response =
-          await ioClient.get(Uri.parse('$BASE_URL/tv/$id/recommendations?$API_KEY'));
-
-      if (response.statusCode == 200) {
-        return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
-      } else {
-        throw ServerException();
-      }
+      throw ServerException();
     }
   }
 
   @override
-  Future<List<SeriesModel>> searchSeries(String query, bool isTest) async {
-    if (isTest) {
-      final response =
-          await client.get(Uri.parse('$BASE_URL/search/tv?$API_KEY&query=$query'));
+  Future<List<SeriesModel>> searchSeries(String query) async {
+    final response =
+        await client.get(Uri.parse('$BASE_URL/search/tv?$API_KEY&query=$query'));
 
-      if (response.statusCode == 200) {
-        return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
-      } else {
-        throw ServerException();
-      }
+    if (response.statusCode == 200) {
+      return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
     } else {
-      HttpClient client = HttpClient(context: await globalContext);
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => false;
-
-      IOClient ioClient = IOClient(client);
-
-      final response =
-          await ioClient.get(Uri.parse('$BASE_URL/search/tv?$API_KEY&query=$query'));
-
-      if (response.statusCode == 200) {
-        return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
-      } else {
-        throw ServerException();
-      }
+      throw ServerException();
     }
   }
 }

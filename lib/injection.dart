@@ -39,6 +39,7 @@ import 'package:core/presentation/bloc/movies_recommendation/movies_recommendati
 import 'package:core/presentation/bloc/series_recommendation/series_recommendation_bloc.dart';
 import 'package:core/presentation/cubit/movies_watchlist/movies_watchlist_cubit.dart';
 import 'package:core/presentation/cubit/series_watchlist/series_watchlist_cubit.dart';
+import 'package:ditonton/data/ssl/ssl_helper.dart';
 import 'package:search/presentation/bloc/search_movies/search_movies_bloc.dart';
 import 'package:search/presentation/bloc/search_series/search_series_bloc.dart';
 import 'package:search/search.dart';
@@ -179,5 +180,5 @@ void init() {
   locator.registerLazySingleton<DatabaseSeriesHelper>(() => DatabaseSeriesHelper());
 
   // external
-  locator.registerLazySingleton(() => http.Client());
+  locator.registerLazySingleton(() => SSLHelper.client);
 }
